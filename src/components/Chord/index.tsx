@@ -16,6 +16,7 @@ import {
   BarreStyled,
   BarreDotStyled,
   ChordNameStyled,
+  ChordSVGStyled,
   DotStyled,
   FretStyled,
   GuitarChordStyled,
@@ -166,7 +167,7 @@ const Dots = ({ chordData }: IDotsProps) => {
   );
 };
 
-function Barre({ chordData }: IBarreProps) {
+const Barre = ({ chordData }: IBarreProps) => {
   if (!chordData.barre) return null;
 
   const isFirstBarreString = (stringIndex: number) => !(chordData.barre as Array<number | null>)[stringIndex - 1];
@@ -230,38 +231,34 @@ function Barre({ chordData }: IBarreProps) {
       })}
     </>
   );
-}
+};
 
-function ChordSvg({ chordData, instrument }: { chordData: TChordData; instrument: EInstrument }) {
-  return (
-    <svg viewBox={viewBox[instrument]}>
-      <ChordName chordData={chordData} instrument={instrument} />
-      <Neck instrument={instrument} />
-      <Strings instrument={instrument} />
-      <Frets instrument={instrument} />
-      <OpenStrings chordData={chordData} />
-      <UnusedStrings chordData={chordData} />
-      <StartFret chordData={chordData} instrument={instrument} />
-      <Dots chordData={chordData} />
-      <Barre chordData={chordData} />
-    </svg>
-  );
-}
+const ChordSvg = ({ chordData, instrument }: { chordData: TChordData; instrument: EInstrument }) => (
+  <ChordSVGStyled viewBox={viewBox[instrument]}>
+    <ChordName chordData={chordData} instrument={instrument} />
+    <Neck instrument={instrument} />
+    <Strings instrument={instrument} />
+    <Frets instrument={instrument} />
+    <OpenStrings chordData={chordData} />
+    <UnusedStrings chordData={chordData} />
+    <StartFret chordData={chordData} instrument={instrument} />
+    <Dots chordData={chordData} />
+    <Barre chordData={chordData} />
+  </ChordSVGStyled>
+);
 
-export default function Chord({ chordData, instrument }: { chordData: TChordData; instrument: EInstrument }) {
-  return (
-    <>
-      {instrument === EInstrument.ukulele ? (
-        <UkuleleChordStyled>
-          <ChordSvg chordData={chordData} instrument={instrument} />
-        </UkuleleChordStyled>
-      ) : null}
+export const Chord = ({ chordData, instrument }: { chordData: TChordData; instrument: EInstrument }) => (
+  <>
+    {instrument === EInstrument.ukulele ? (
+      <UkuleleChordStyled>
+        <ChordSvg chordData={chordData} instrument={instrument} />
+      </UkuleleChordStyled>
+    ) : null}
 
-      {instrument === EInstrument.guitar ? (
-        <GuitarChordStyled>
-          <ChordSvg chordData={chordData} instrument={instrument} />
-        </GuitarChordStyled>
-      ) : null}
-    </>
-  );
-}
+    {instrument === EInstrument.guitar ? (
+      <GuitarChordStyled>
+        <ChordSvg chordData={chordData} instrument={instrument} />
+      </GuitarChordStyled>
+    ) : null}
+  </>
+);

@@ -5,21 +5,29 @@ const CHORD_COLORS = {
 };
 
 export const ChordStyled = styled.div`
-  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #aaa;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
   font-family: Arial, sans-serif;
   text-anchor: middle;
 `;
 
-export const GuitarChordStyled = styled(ChordStyled)`
-  width: 287.27272727272725px;
-  background: aqua;
+export const ChordSVGStyled = styled.svg`
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
 `;
 
-export const UkuleleChordStyled = styled(ChordStyled)`
-  width: 200px;
-  background: wheat;
-`;
+export const GuitarChordStyled = styled(ChordStyled)``;
+
+export const UkuleleChordStyled = styled(ChordStyled)``;
 
 export const ChordNameStyled = styled.text`
   fill: ${CHORD_COLORS.BASE};

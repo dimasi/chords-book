@@ -6,7 +6,7 @@ import { ESongsSortBy } from '@/stores/Songs/constants';
 import { ESortDirection } from '@/constants';
 
 class SongsStore {
-  lastSongId = 0;
+  lastSongId = 2;
 
   songs: TSong[] = [
     {
@@ -68,6 +68,8 @@ class SongsStore {
     this.songs.push(newSong);
 
     this.lastSongId = id;
+
+    return id;
   };
 
   removeSong = (id: number) => {

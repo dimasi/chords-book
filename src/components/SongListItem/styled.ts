@@ -4,7 +4,7 @@ export const SongListItemStyled = styled.div`
   display: flex;
   align-items: center;
   height: 75px;
-  padding: 0 15px;
+  padding: 0 5px 0 15px;
   margin: 0 0 10px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
   border: 1px solid #aaa;
@@ -52,8 +52,4 @@ export const SongListItemSpacerStyled = styled.div`
   width: 3px;
   height: 42px;
   border: 1px solid #242424;
-`;
-
-export const SongListItemRemoveStyled = styled.div`
-  margin: 0 0 0 10px;
 `;

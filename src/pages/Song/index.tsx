@@ -1,8 +1,11 @@
 import { mdiArrowLeft } from '@mdi/js';
-import { EInstrument } from '@/domain/constants';
-import { TChordData } from '@/domain/types';
+import { useParams } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { TSong } from '@/domain/types';
+import { TChordWithActiveFlag } from '@/components/Chord/types';
 import { EButtonTheme } from '@/components/Button/constants';
-import { ukuleleChords } from '@/data/ukuleleChords';
+import { useBackButton } from '@/hooks/useBackButton';
+import { useStores } from '@/stores/rootStoreContext';
 import { Button } from '@/components/Button';
 import { Chord } from '@/components/Chord';
 import { Search } from '@/components/Search';
@@ -27,69 +30,32 @@ import {
   SongPageSongChordsContainerStyled,
   SongPageStyled,
 } from './styled';
-import { useBackButton } from '@/hooks/useBackButton';
 
-const chords = [
-  {
-    barre: null,
-    dots: [1, 3, 1, 1],
-    fret: null,
-    group: 'A#',
-    name: 'A#7sus4',
-  },
-  {
-    barre: null,
-    dots: [0, 0, 0, 3],
-    fret: null,
-    group: 'C',
-    name: 'C',
-  },
-  {
-    barre: null,
-    dots: [1, 1, 1, 2],
-    fret: null,
-    group: 'Db',
-    name: 'Db7',
-  },
-  {
-    barre: null,
-    dots: [2, 0, 1, 0],
-    fret: null,
-    group: 'F',
-    name: 'F',
-  },
-  {
-    barre: null,
-    dots: [0, 0, 0, 3],
-    fret: null,
-    group: 'C',
-    name: 'C',
-  },
-  {
-    barre: null,
-    dots: [1, 1, 1, 2],
-    fret: null,
-    group: 'Db',
-    name: 'Db7',
-  },
-  {
-    barre: null,
-    dots: [2, 0, 1, 0],
-    fret: null,
-    group: 'F',
-    name: 'F',
-  },
-];
-
-const allChordsByGroups = ukuleleChords.reduce((chordsByGroups: Record<string, TChordData[]>, chord) => {
-  // eslint-disable-next-line no-param-reassign
-  if (!chordsByGroups[chord.group]) chordsByGroups[chord.group] = [];
-  chordsByGroups[chord.group].push(chord);
-  return chordsByGroups;
-}, {});
-
-export const SongPage = () => {
+export const SongPage = observer(() => {
+  const { songId } = useParams();
+  const {
+    chordsStore: { chords: allChords },
+    settingsStore: { instrument },
+    songsStore: { songs },
+  } = useStores();
   const { handleBackButtonClick } = useBackButton();
+
+  const song = songs.find(({ id }) => `${id}` === songId) as TSong;
+
+  const chords = song.chords.map((chordName) => allChords[instrument].find((chord) => chord.name === chordName));
+
+  const allChordsByGroups = allChords[instrument].reduce(
+    (chordsByGroups: Record<string, TChordWithActiveFlag[]>, chord) => {
+      // eslint-disable-next-line no-param-reassign
+      if (!chordsByGroups[chord.group]) chordsByGroups[chord.group] = [];
+      chordsByGroups[chord.group].push({
+        ...chord,
+        active: song.chords.includes(chord.name),
+      });
+      return chordsByGroups;
+    },
+    {},
+  );
 
   return (
     <SongPageStyled>
@@ -104,19 +70,21 @@ export const SongPage = () => {
             />
           </SongPageBackButtonStyled>
 
-          <SongPageNameStyled>Alps</SongPageNameStyled>
-          <SongPageAuthorStyled>by Motorama</SongPageAuthorStyled>
+          <SongPageNameStyled>{song.name}</SongPageNameStyled>
+          {song.author ? <SongPageAuthorStyled>by {song.author}</SongPageAuthorStyled> : null}
         </SongPageHeaderStyled>
 
         <SongPageSongChordsContainerStyled>
           <SongPageGridStyled>
-            {chords.map((chordData) => (
-              <SongPageGridItemStyled key={chordData.name}>
-                <SongPageGridItemHeightHolder>
-                  <Chord chordData={chordData} instrument={EInstrument.ukulele} />
-                </SongPageGridItemHeightHolder>
-              </SongPageGridItemStyled>
-            ))}
+            {chords.map((chord) =>
+              chord ? (
+                <SongPageGridItemStyled key={chord.name}>
+                  <SongPageGridItemHeightHolder>
+                    <Chord chordData={chord} instrument={instrument} />
+                  </SongPageGridItemHeightHolder>
+                </SongPageGridItemStyled>
+              ) : null,
+            )}
           </SongPageGridStyled>
         </SongPageSongChordsContainerStyled>
       </SongPageContentStyled>
@@ -138,7 +106,7 @@ export const SongPage = () => {
                 {groupChords.map((chordData) => (
                   <SongPageChordsGridItemStyled key={chordData.name}>
                     <SongPageChordsGridItemHeightHolder>
-                      <Chord chordData={chordData} instrument={EInstrument.ukulele} />
+                      <Chord chordData={chordData} instrument={instrument} active={chordData.active} />
                     </SongPageChordsGridItemHeightHolder>
                   </SongPageChordsGridItemStyled>
                 ))}
@@ -149,4 +117,4 @@ export const SongPage = () => {
       </SongPageAddFormStyled>
     </SongPageStyled>
   );
-};
+});

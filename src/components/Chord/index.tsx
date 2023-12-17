@@ -1,9 +1,10 @@
 import uniqueId from 'lodash.uniqueid';
 import { EInstrument } from '@/domain/constants';
-import { TChordData } from '@/domain/types';
+import { TChord } from '@/domain/types';
 import {
   IBarreProps,
   IChordNameProps,
+  IChordProps,
   IDotsProps,
   IFretsProps,
   INeckProps,
@@ -35,7 +36,7 @@ const viewBoxWidth = {
 
 const viewBox = {
   [EInstrument.guitar]: `0 0 ${viewBoxWidth[EInstrument.guitar]} 660`,
-  [EInstrument.ukulele]: `0 0 ${viewBoxWidth[EInstrument.ukulele]} 660`,
+  [EInstrument.ukulele]: `0 0 ${viewBoxWidth[EInstrument.ukulele]} 700`,
 };
 
 const chordNameX = {
@@ -233,7 +234,7 @@ const Barre = ({ chordData }: IBarreProps) => {
   );
 };
 
-const ChordSvg = ({ chordData, instrument }: { chordData: TChordData; instrument: EInstrument }) => (
+const ChordSvg = ({ chordData, instrument }: { chordData: TChord; instrument: EInstrument }) => (
   <ChordSVGStyled viewBox={viewBox[instrument]}>
     <ChordName chordData={chordData} instrument={instrument} />
     <Neck instrument={instrument} />
@@ -247,16 +248,16 @@ const ChordSvg = ({ chordData, instrument }: { chordData: TChordData; instrument
   </ChordSVGStyled>
 );
 
-export const Chord = ({ chordData, instrument }: { chordData: TChordData; instrument: EInstrument }) => (
+export const Chord = ({ chordData, instrument, active }: IChordProps) => (
   <>
     {instrument === EInstrument.ukulele ? (
-      <UkuleleChordStyled>
+      <UkuleleChordStyled active={active}>
         <ChordSvg chordData={chordData} instrument={instrument} />
       </UkuleleChordStyled>
     ) : null}
 
     {instrument === EInstrument.guitar ? (
-      <GuitarChordStyled>
+      <GuitarChordStyled active={active}>
         <ChordSvg chordData={chordData} instrument={instrument} />
       </GuitarChordStyled>
     ) : null}

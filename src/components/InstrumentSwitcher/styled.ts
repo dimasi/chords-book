@@ -38,6 +38,7 @@ export const InstrumentSwitcherDropdownStyled = styled.div`
   display: block;
   min-width: 100px;
   position: absolute;
+  z-index: 2;
   top: -7px;
   left: -11px;
   border: 1px solid #aaa;

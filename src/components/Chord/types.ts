@@ -1,8 +1,14 @@
-import { TChordData } from '@/domain/types';
+import { TChord } from '@/domain/types';
 import { EInstrument } from '@/domain/constants';
 
+export interface IChordProps {
+  chordData: TChord;
+  instrument: EInstrument;
+  active?: boolean;
+}
+
 export interface IChordNameProps {
-  chordData: TChordData;
+  chordData: TChord;
   instrument: EInstrument;
 }
 
@@ -19,22 +25,30 @@ export interface IFretsProps {
 }
 
 export interface IOpenStringsProps {
-  chordData: TChordData;
+  chordData: TChord;
 }
 
 export interface IUnusedStringsProps {
-  chordData: TChordData;
+  chordData: TChord;
 }
 
 export interface IStartFretProps {
-  chordData: TChordData;
+  chordData: TChord;
   instrument: EInstrument;
 }
 
 export interface IDotsProps {
-  chordData: TChordData;
+  chordData: TChord;
 }
 
 export interface IBarreProps {
-  chordData: TChordData;
+  chordData: TChord;
 }
+
+export interface IChordStyledProps {
+  active?: boolean;
+}
+
+export type TChordWithActiveFlag = TChord & {
+  active?: boolean;
+};

@@ -13,13 +13,13 @@ class SongsStore {
       id: 1,
       name: 'Alps',
       author: 'Motorama',
-      chords: [],
+      chords: ['Am', 'Bb', 'Adim'],
     },
     {
       id: 2,
       name: 'Message',
       author: 'Still Corners',
-      chords: [],
+      chords: ['Aaug'],
     },
   ];
 

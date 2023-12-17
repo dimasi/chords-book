@@ -57,7 +57,7 @@ export const SongsListPage = observer(() => {
 
         <SongsListPageSongsStyled>
           {sortedSongs.map(({ author, id, name, chords }) => (
-            <SongListItem key={id} author={author} name={name} chords={chords} onClick={() => navigate(id)} />
+            <SongListItem key={id} author={author} name={name} chords={chords} onClick={() => navigate(`${id}`)} />
           ))}
         </SongsListPageSongsStyled>
       </SongsListPageContentStyled>

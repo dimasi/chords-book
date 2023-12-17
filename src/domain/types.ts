@@ -1,4 +1,4 @@
-export type TChordData = {
+export type TChord = {
   dots: Array<number | null>;
   fret: number | null;
   group: string;
@@ -10,5 +10,5 @@ export type TSong = {
   id: number;
   name: string;
   author?: string;
-  chords: number[];
+  chords: string[];
 };

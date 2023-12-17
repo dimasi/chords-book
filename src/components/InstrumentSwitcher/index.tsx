@@ -77,7 +77,10 @@ export const InstrumentSwitcher = observer(() => {
           <InstrumentSwitcherDropdownStyled>
             {sortedInstrument.map((instrument) =>
               isActiveInstrument(instrument) ? (
-                <InstrumentSwitcherDropdownActiveItemStyled onClick={handleDropdownActiveItemClick}>
+                <InstrumentSwitcherDropdownActiveItemStyled
+                  key={instrument.title}
+                  onClick={handleDropdownActiveItemClick}
+                >
                   {instrument.title}
                   <InstrumentSwitcherDropdownActiveItemTogglerIconStyled
                     path={mdiChevronUp}
@@ -87,6 +90,7 @@ export const InstrumentSwitcher = observer(() => {
                 </InstrumentSwitcherDropdownActiveItemStyled>
               ) : (
                 <InstrumentSwitcherDropdownItemStyled
+                  key={instrument.title}
                   onClick={(event: React.MouseEvent<HTMLElement>) => handleDropdownItemClick(event, instrument)}
                 >
                   {instrument.title}

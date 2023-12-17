@@ -1,26 +1,26 @@
 import { TChord } from '@/domain/types';
 
-export const ukuleleChords: TChord[] = [
+export const guitarChords: TChord[] = [
   {
-    dots: [2, 1, 0, 0],
+    dots: [-1, 0, 2, 2, 2, 0],
     fret: null,
     group: 'A',
     name: 'A',
   },
   {
-    dots: [2, 0, 0, 0],
+    dots: [-1, 0, 2, 2, 1, 0],
     fret: null,
     group: 'A',
     name: 'Am',
   },
   {
-    dots: [2, 1, 1, 4],
+    dots: [-1, 0, 3, 2, 2, 1],
     fret: null,
     group: 'A',
     name: 'Aaug',
   },
   {
-    dots: [1, 2, 4, 2],
+    dots: [-1, 0, 1, 2, 1, -1],
     fret: 2,
     group: 'A',
     name: 'Adim',
@@ -164,25 +164,28 @@ export const ukuleleChords: TChord[] = [
   //   name: 'Amadd9',
   // },
   {
-    dots: [3, 2, 1, 1],
+    barre: [null, 1, 1, 1, 1, 1],
+    dots: [-1, null, 3, 3, 3, null],
     fret: null,
     group: 'Bb',
     name: 'Bb',
   },
   {
-    dots: [3, 1, 1, 1],
+    barre: [null, 1, 1, 1, 1, 1],
+    dots: [-1, null, 3, 3, 2, null],
     fret: null,
     group: 'Bb',
     name: 'Bbm',
   },
   {
-    dots: [3, 2, 2, 1],
-    fret: null,
+    barre: [null, null, null, 2, 2, null],
+    dots: [-1, 4, 3, null, null, -1],
+    fret: 2,
     group: 'Bb',
     name: 'Bbaug',
   },
   {
-    dots: [3, 1, 0, 1],
+    dots: [-1, 1, 2, 3, 2, -1],
     fret: null,
     group: 'Bb',
     name: 'Bbdim',

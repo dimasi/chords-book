@@ -248,16 +248,16 @@ const ChordSvg = ({ chordData, instrument }: { chordData: TChord; instrument: EI
   </ChordSVGStyled>
 );
 
-export const Chord = ({ chordData, instrument, active }: IChordProps) => (
+export const Chord = ({ chordData, instrument, active, onClick }: IChordProps) => (
   <>
     {instrument === EInstrument.ukulele ? (
-      <UkuleleChordStyled active={active}>
+      <UkuleleChordStyled active={active} onClick={onClick && (() => onClick(chordData))}>
         <ChordSvg chordData={chordData} instrument={instrument} />
       </UkuleleChordStyled>
     ) : null}
 
     {instrument === EInstrument.guitar ? (
-      <GuitarChordStyled active={active}>
+      <GuitarChordStyled active={active} onClick={onClick && (() => onClick(chordData))}>
         <ChordSvg chordData={chordData} instrument={instrument} />
       </GuitarChordStyled>
     ) : null}

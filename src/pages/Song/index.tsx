@@ -1,7 +1,8 @@
-import { mdiArrowLeft } from '@mdi/js';
+import { mdiArrowLeft, mdiCloseCircle } from '@mdi/js';
+import React from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
-import { TSong } from '@/domain/types';
+import { TChord, TSong } from '@/domain/types';
 import { TChordWithActiveFlag } from '@/components/Chord/types';
 import { EButtonTheme } from '@/components/Button/constants';
 import { useBackButton } from '@/hooks/useBackButton';
@@ -13,15 +14,16 @@ import {
   SongPageAddFormStyled,
   SongPageAuthorStyled,
   SongPageBackButtonStyled,
-  SongPageChordSearchContainerStyled,
+  SongPageChordRemoveButtonStyled,
   SongPageChordsContainerStyled,
+  SongPageChordSearchContainerStyled,
+  SongPageChordsGridItemHeightHolderStyled,
+  SongPageChordsGridItemStyled,
+  SongPageChordsGridStyled,
   SongPageChordsGroupStyled,
   SongPageChordsGroupTitleStyled,
-  SongPageChordsGridStyled,
-  SongPageChordsGridItemStyled,
-  SongPageChordsGridItemHeightHolder,
   SongPageContentStyled,
-  SongPageGridItemHeightHolder,
+  SongPageGridItemHeightHolderStyled,
   SongPageGridItemStyled,
   SongPageGridStyled,
   SongPageHeaderStyled,
@@ -36,7 +38,7 @@ export const SongPage = observer(() => {
   const {
     chordsStore: { chords: allChords },
     settingsStore: { instrument },
-    songsStore: { songs },
+    songsStore: { songs, toggleChordInSong, removeChordFromSong },
   } = useStores();
   const { handleBackButtonClick } = useBackButton();
 
@@ -56,6 +58,20 @@ export const SongPage = observer(() => {
     },
     {},
   );
+
+  const handleChordClick = (chord: TChord) => {
+    toggleChordInSong({
+      songId: song.id,
+      chordName: chord.name,
+    });
+  };
+
+  const handleChordRemoveButtonClick = (chord: TChord) => {
+    removeChordFromSong({
+      songId: song.id,
+      chordName: chord.name,
+    });
+  };
 
   return (
     <SongPageStyled>
@@ -79,9 +95,17 @@ export const SongPage = observer(() => {
             {chords.map((chord) =>
               chord ? (
                 <SongPageGridItemStyled key={chord.name}>
-                  <SongPageGridItemHeightHolder>
+                  <SongPageGridItemHeightHolderStyled>
+                    <SongPageChordRemoveButtonStyled>
+                      <Button
+                        icon={mdiCloseCircle}
+                        theme={EButtonTheme.transparentDanger}
+                        iconSize={1}
+                        onClick={() => handleChordRemoveButtonClick(chord)}
+                      />
+                    </SongPageChordRemoveButtonStyled>
                     <Chord chordData={chord} instrument={instrument} />
-                  </SongPageGridItemHeightHolder>
+                  </SongPageGridItemHeightHolderStyled>
                 </SongPageGridItemStyled>
               ) : null,
             )}
@@ -105,9 +129,14 @@ export const SongPage = observer(() => {
               <SongPageChordsGridStyled>
                 {groupChords.map((chordData) => (
                   <SongPageChordsGridItemStyled key={chordData.name}>
-                    <SongPageChordsGridItemHeightHolder>
-                      <Chord chordData={chordData} instrument={instrument} active={chordData.active} />
-                    </SongPageChordsGridItemHeightHolder>
+                    <SongPageChordsGridItemHeightHolderStyled>
+                      <Chord
+                        chordData={chordData}
+                        instrument={instrument}
+                        active={chordData.active}
+                        onClick={handleChordClick}
+                      />
+                    </SongPageChordsGridItemHeightHolderStyled>
                   </SongPageChordsGridItemStyled>
                 ))}
               </SongPageChordsGridStyled>

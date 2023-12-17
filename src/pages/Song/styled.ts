@@ -66,7 +66,7 @@ export const SongPageGridItemStyled = styled.div`
   padding: 6px;
 `;
 
-export const SongPageGridItemHeightHolder = styled.div`
+export const SongPageGridItemHeightHolderStyled = styled.div`
   width: 100%;
   padding-bottom: 120%;
   position: relative;
@@ -114,8 +114,15 @@ export const SongPageChordsGridItemStyled = styled.div`
   padding: 6px;
 `;
 
-export const SongPageChordsGridItemHeightHolder = styled.div`
+export const SongPageChordsGridItemHeightHolderStyled = styled.div`
   width: 100%;
   padding-bottom: 120%;
   position: relative;
+`;
+
+export const SongPageChordRemoveButtonStyled = styled.div`
+  position: absolute;
+  z-index: 2;
+  top: -18px;
+  right: -24px;
 `;

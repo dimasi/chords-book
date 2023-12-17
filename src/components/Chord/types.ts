@@ -5,6 +5,7 @@ export interface IChordProps {
   chordData: TChord;
   instrument: EInstrument;
   active?: boolean;
+  onClick?: (chord: TChord) => void;
 }
 
 export interface IChordNameProps {

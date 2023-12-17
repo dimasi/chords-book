@@ -1,7 +1,12 @@
 import { makeAutoObservable } from 'mobx';
 import { makePersistable } from 'mobx-persist-store';
 import { TSong } from '@/domain/types';
-import { IAddSongParams } from '@/stores/Songs/types';
+import {
+  IAddChordToSongParams,
+  IAddSongParams,
+  IRemoveChordToSongParams,
+  IToggleChordToSongParams,
+} from '@/stores/Songs/types';
 import { ESongsSortBy } from '@/stores/Songs/constants';
 import { ESortDirection } from '@/constants';
 
@@ -82,6 +87,29 @@ class SongsStore {
 
   setSortDirection = (sortDirection: ESortDirection) => {
     this.sortDirection = sortDirection;
+  };
+
+  addChordToSong = ({ songId, chordName }: IAddChordToSongParams) => {
+    const song = this.songs.find(({ id }) => id === songId);
+    if (!song) return;
+    song.chords.push(chordName);
+  };
+
+  removeChordFromSong = ({ songId, chordName }: IRemoveChordToSongParams) => {
+    const song = this.songs.find(({ id }) => id === songId);
+    if (!song) return;
+    song.chords = song.chords.filter((songChordName) => songChordName !== chordName);
+  };
+
+  toggleChordInSong = ({ songId, chordName }: IToggleChordToSongParams) => {
+    const song = this.songs.find(({ id }) => id === songId);
+    if (!song) return;
+
+    if (song.chords.includes(chordName)) {
+      this.removeChordFromSong({ songId, chordName });
+    } else {
+      this.addChordToSong({ songId, chordName });
+    }
   };
 }
 

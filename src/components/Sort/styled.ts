@@ -10,10 +10,13 @@ export const SortStyled = styled.div`
 `;
 
 export const SortTitleStyled = styled.div`
-  margin: 0 10px 0 0;
+  margin: 0 5px 0 0;
+  color: #555;
 `;
 
-export const SortItemStyled = styled.div``;
+export const SortItemStyled = styled.div`
+  cursor: pointer;
+`;
 
 export const SortActiveItemStyled = styled(SortItemStyled)`
   padding: 0 20px 0 0;

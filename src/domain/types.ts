@@ -5,3 +5,10 @@ export type TChordData = {
   name: string;
   barre?: Array<number | null> | null;
 };
+
+export type TSong = {
+  id: number;
+  name: string;
+  author?: string;
+  chords: number[];
+};

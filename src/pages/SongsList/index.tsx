@@ -1,8 +1,9 @@
 import { mdiStepForward } from '@mdi/js';
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useStores } from '@/stores/rootStoreContext';
+import { TSong } from '@/domain/types';
 import { ESongsSortBy } from '@/stores/Songs/constants';
 import { EButtonTheme } from '@/components/Button/constants';
 import { TOnSortParams, TSortItem } from '@/components/Sort/types';
@@ -23,15 +24,41 @@ import {
   SongsListPageSongsStyled,
   SongsListPageStyled,
 } from './styled';
+import { SearchNoResults } from '@/components/Search/components/NoResults';
 
 export const SongsListPage = observer(() => {
   const navigate = useNavigate();
+  const [search, setSearch] = useState('');
   const [songName, setSongName] = useState('');
   const [songAuthor, setSongAuthor] = useState('');
 
   const {
     songsStore: { sortedSongs, sortBy, sortDirection, setSortBy, setSortDirection, addSong },
   } = useStores();
+
+  const [songsList, setSongsList] = useState<TSong[]>(sortedSongs);
+  const [noSongsFound, setNoSongsFound] = useState(false);
+
+  useEffect(() => {
+    setNoSongsFound(false);
+
+    if (search.length > 1) {
+      const LCSearch = search.toLowerCase();
+
+      const filteredSongs = sortedSongs.filter(
+        ({ name, author }) =>
+          name.toLowerCase().indexOf(LCSearch) > -1 || (author && author.toLowerCase().indexOf(LCSearch) > -1),
+      );
+
+      setSongsList(filteredSongs);
+
+      if (!filteredSongs.length) {
+        setNoSongsFound(true);
+      }
+    } else {
+      setSongsList(sortedSongs);
+    }
+  }, [search, sortedSongs]);
 
   const handleSort = ({ sortBy: nextSortBy, sortDirection: nextSortDirection }: TOnSortParams<ESongsSortBy>) => {
     setSortBy(nextSortBy);
@@ -66,17 +93,22 @@ export const SongsListPage = observer(() => {
     },
   ];
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(event.target.value);
+  };
+
   return (
     <SongsListPageStyled>
       <SongsListPageContentStyled>
         <SongsListPageHeaderStyled>
-          <Search />
-
+          <Search value={search} onChange={handleSearchChange} />
           <Sort<ESongsSortBy> sortItems={sortItems} sortBy={sortBy} sortDirection={sortDirection} onSort={handleSort} />
         </SongsListPageHeaderStyled>
 
         <SongsListPageSongsStyled>
-          {sortedSongs.map(({ author, id, name, chords }) => (
+          {noSongsFound ? <SearchNoResults text="No songs found" onClickReset={() => setSearch('')} /> : null}
+
+          {songsList.map(({ author, id, name, chords }) => (
             <SongListItem
               key={id}
               id={id}
@@ -84,6 +116,7 @@ export const SongsListPage = observer(() => {
               name={name}
               chords={chords}
               onClick={() => navigate(`${id}`)}
+              searchWords={search.length > 1 ? [search] : ['']}
             />
           ))}
         </SongsListPageSongsStyled>

@@ -6,4 +6,5 @@ export interface ISongListItemProps {
   author?: string;
   chords: string[];
   onClick?: React.MouseEventHandler<HTMLElement>;
+  searchWords: string[];
 }

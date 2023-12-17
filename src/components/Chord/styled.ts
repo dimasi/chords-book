@@ -14,9 +14,9 @@ export const ChordStyled = styled.div<IChordStyledProps>`
   left: 0;
   width: 100%;
   height: 100%;
-  border: 1px solid ${(props: IChordStyledProps) => (props.active ? '#76b471' : '#aaa')};
-  box-shadow: 0 0 5px ${(props: IChordStyledProps) => (props.active ? 'rgba(21, 204, 7, 0.6)' : 'rgba(0, 0, 0, 0.4)')};
-  background: ${(props: IChordStyledProps) => (props.active ? '#73fa6b' : '#fff')};
+  border: 1px solid ${(props: IChordStyledProps) => (props.$active ? '#76b471' : '#aaa')};
+  box-shadow: 0 0 5px ${(props: IChordStyledProps) => (props.$active ? 'rgba(21, 204, 7, 0.6)' : 'rgba(0, 0, 0, 0.4)')};
+  background: ${(props: IChordStyledProps) => (props.$active ? '#73fa6b' : '#fff')};
   font-family: Arial, sans-serif;
   text-anchor: middle;
 `;

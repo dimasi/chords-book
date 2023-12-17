@@ -1,3 +1,4 @@
+import Highlighter from 'react-highlight-words';
 import styled from 'styled-components';
 
 export const SongListItemStyled = styled.div`
@@ -15,11 +16,12 @@ export const SongListItemTitleStyled = styled.div`
   flex: 0 0 auto;
 `;
 
-export const SongListItemNameStyled = styled.div`
+export const SongListItemNameStyled = styled(Highlighter)`
+  display: block;
   font-weight: 700;
 `;
 
-export const SongListItemAuthorStyled = styled.div``;
+export const SongListItemAuthorStyled = styled(Highlighter)``;
 
 export const SongListItemChordsStyled = styled.div`
   flex: 0 0 auto;

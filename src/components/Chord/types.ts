@@ -47,7 +47,7 @@ export interface IBarreProps {
 }
 
 export interface IChordStyledProps {
-  active?: boolean;
+  $active?: boolean;
 }
 
 export type TChordWithActiveFlag = TChord & {

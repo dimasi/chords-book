@@ -1,5 +1,5 @@
 import { mdiArrowLeft, mdiCloseCircle } from '@mdi/js';
-import React from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { TChord, TSong } from '@/domain/types';
@@ -10,6 +10,7 @@ import { useStores } from '@/stores/rootStoreContext';
 import { Button } from '@/components/Button';
 import { Chord } from '@/components/Chord';
 import { Search } from '@/components/Search';
+import { TChordsByGroups } from './types';
 import {
   SongPageAddFormStyled,
   SongPageAuthorStyled,
@@ -32,6 +33,7 @@ import {
   SongPageSongChordsContainerStyled,
   SongPageStyled,
 } from './styled';
+import { SearchNoResults } from '@/components/Search/components/NoResults';
 
 export const SongPage = observer(() => {
   const { songId } = useParams();
@@ -46,18 +48,53 @@ export const SongPage = observer(() => {
 
   const chords = song.chords.map((chordName) => allChords[instrument].find((chord) => chord.name === chordName));
 
-  const allChordsByGroups = allChords[instrument].reduce(
-    (chordsByGroups: Record<string, TChordWithActiveFlag[]>, chord) => {
-      // eslint-disable-next-line no-param-reassign
-      if (!chordsByGroups[chord.group]) chordsByGroups[chord.group] = [];
-      chordsByGroups[chord.group].push({
-        ...chord,
-        active: song.chords.includes(chord.name),
-      });
-      return chordsByGroups;
-    },
-    {},
+  const allChordsByGroups = useMemo(
+    () =>
+      allChords[instrument].reduce((chordsByGroups: Record<string, TChordWithActiveFlag[]>, chord) => {
+        // eslint-disable-next-line no-param-reassign
+        if (!chordsByGroups[chord.group]) chordsByGroups[chord.group] = [];
+        chordsByGroups[chord.group].push({
+          ...chord,
+          active: song.chords.includes(chord.name),
+        });
+        return chordsByGroups;
+      }, {}),
+    [allChords, instrument, song.chords],
   );
+
+  const [chordsSearch, setChordsSearch] = useState('');
+  const [noChordsFound, setNoChordsFound] = useState(false);
+  const [listChordsWithGroups, setListChordsWithGroups] = useState<TChordsByGroups>(allChordsByGroups);
+
+  useEffect(() => {
+    setNoChordsFound(false);
+
+    if (!chordsSearch.length) {
+      setListChordsWithGroups(allChordsByGroups);
+    } else {
+      const filteredListChordsWithGroups = Object.entries(allChordsByGroups).reduce(
+        (acc: TChordsByGroups, [group, groupChords]) => {
+          const filteredGroupChords = groupChords.filter(
+            (groupChord: TChordWithActiveFlag) =>
+              groupChord.name.toLowerCase().indexOf(chordsSearch.toLowerCase()) > -1,
+          );
+
+          if (filteredGroupChords.length) {
+            acc[group] = filteredGroupChords;
+          }
+
+          return acc;
+        },
+        {},
+      );
+
+      setListChordsWithGroups(filteredListChordsWithGroups);
+
+      if (!Object.keys(filteredListChordsWithGroups).length) {
+        setNoChordsFound(true);
+      }
+    }
+  }, [chordsSearch, allChordsByGroups]);
 
   const handleChordClick = (chord: TChord) => {
     toggleChordInSong({
@@ -71,6 +108,10 @@ export const SongPage = observer(() => {
       songId: song.id,
       chordName: chord.name,
     });
+  };
+
+  const handleChordsSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChordsSearch(event.target.value);
   };
 
   return (
@@ -119,11 +160,13 @@ export const SongPage = observer(() => {
         </SongPageHeaderStyled>
 
         <SongPageChordSearchContainerStyled>
-          <Search />
+          <Search value={chordsSearch} onChange={handleChordsSearchChange} />
         </SongPageChordSearchContainerStyled>
 
         <SongPageChordsContainerStyled>
-          {Object.entries(allChordsByGroups).map(([group, groupChords]) => (
+          {noChordsFound ? <SearchNoResults text="No chords found" onClickReset={() => setChordsSearch('')} /> : null}
+
+          {Object.entries(listChordsWithGroups).map(([group, groupChords]) => (
             <SongPageChordsGroupStyled key={group}>
               <SongPageChordsGroupTitleStyled>{group}</SongPageChordsGroupTitleStyled>
               <SongPageChordsGridStyled>

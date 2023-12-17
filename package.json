@@ -22,6 +22,7 @@
     "react": "^18.2.0",
     "react-detect-click-outside": "^1.1.7",
     "react-dom": "^18.2.0",
+    "react-highlight-words": "^0.20.0",
     "react-router-dom": "^6.21.0",
     "styled-components": "^6.1.1"
   },
@@ -30,6 +31,7 @@
     "@types/node": "^20.10.4",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
+    "@types/react-highlight-words": "^0.16.7",
     "@typescript-eslint/eslint-plugin": "^5.35.1",
     "@typescript-eslint/parser": "^5.35.1",
     "@vitejs/plugin-react": "^2.0.1",

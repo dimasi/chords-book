@@ -55,7 +55,7 @@ class SongsStore {
     makeAutoObservable(this);
     makePersistable(this, {
       name: 'SongsStore',
-      properties: ['songs', 'sortBy', 'sortDirection'],
+      properties: ['songs', 'sortBy', 'sortDirection', 'lastSongId'],
       storage: window.localStorage,
     });
   }

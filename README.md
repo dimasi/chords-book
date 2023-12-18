@@ -1,15 +1,16 @@
 # Chords Book
 
-This React application was created for refresh my React knowledge.
+This React application was created in order to refresh my React knowledge.
 
-[Chords Book](https://chords.dimasi.online)
+[Demo](https://chords.dimasi.online)
 
-With this application you can create sets of chords for songs you liked. Also, you can easily switch between 
-two instruments: Guitar and Ukulele. Search and sort songs are also available.
+With this application you can create the sets of chords for songs you like. Additionally, it is possible to switch 
+between two instruments: Guitar and Ukulele. Such functions as searching and sort out of the songs are also 
+available in the app.
 
-This application use browser LocalStorage for storing your data.
+The application uses LocalStorage browser for storing the data.
 
-This application create with React, TypeScript, MobX + Mobx Persist Store and Styled Components.
+It is created by React, TypeScript, MobX + Mobx Persist Store and Styled Components.
 
 ## Resources
 

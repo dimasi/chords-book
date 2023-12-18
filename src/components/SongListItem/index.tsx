@@ -24,7 +24,7 @@ export const SongListItem = observer(
       settingsStore: { instrument },
     } = useStores();
 
-    const { chords, handleRemoveButtonClick } = useSongListItem({ author, chordsNames, id, name });
+    const { chords, moreChordsCounter, handleRemoveButtonClick } = useSongListItem({ author, chordsNames, id, name });
 
     return (
       <SongListItemStyled onClick={onClick}>
@@ -34,14 +34,14 @@ export const SongListItem = observer(
         </SongListItemTitleStyled>
 
         <SongListItemChordsStyled>
-          {chords.map((chord) =>
-            chord ? (
+          {chords.map((chord, index) =>
+            chord && index < 5 ? (
               <SongListItemChordContainerStyled key={chord.name}>
                 <Chord chordData={chord} instrument={instrument} />
               </SongListItemChordContainerStyled>
             ) : null,
           )}
-          {chords.length > 3 ? <SongListItemChordsMoreStyled>+3</SongListItemChordsMoreStyled> : null}
+          {moreChordsCounter ? <SongListItemChordsMoreStyled>+{moreChordsCounter}</SongListItemChordsMoreStyled> : null}
         </SongListItemChordsStyled>
 
         <SongListItemSpacerStyled />

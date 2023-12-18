@@ -12,6 +12,8 @@ export const useSongListItem = ({ author, chordsNames, id, name }: IUseSongListI
 
   const chords = chordsNames.map((chordName) => allChords[instrument].find((chord) => chord.name === chordName));
 
+  const moreChordsCounter = chords.length > 5 ? chords.length - 5 : null;
+
   const handleRemoveButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation();
 
@@ -32,6 +34,7 @@ export const useSongListItem = ({ author, chordsNames, id, name }: IUseSongListI
 
   return {
     chords,
+    moreChordsCounter,
     handleRemoveButtonClick,
   };
 };

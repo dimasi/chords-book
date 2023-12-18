@@ -1,4 +1,4 @@
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import styled from 'styled-components';
 import { BUTTON_BACKGROUND, BUTTON_BORDER_COLOR, BUTTON_COLOR } from './constants';
 import { IButtonStyledProps } from './types';

@@ -2,6 +2,8 @@
 
 This React application was created for refresh my React knowledge.
 
+[Chords Book](https://chords.dimasi.online)
+
 With this application you can create sets of chords for songs you liked. Also, you can easily switch between 
 two instruments: Guitar and Ukulele. Search and sort songs are also available.
 

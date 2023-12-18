@@ -1,5 +1,5 @@
 import { mdiArrowLeft, mdiCloseCircle } from '@mdi/js';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { observer } from 'mobx-react-lite';
 import { TChord, TSong } from '@/domain/types';
@@ -38,7 +38,7 @@ import { SearchNoResults } from '@/components/Search/components/NoResults';
 export const SongPage = observer(() => {
   const { songId } = useParams();
   const {
-    chordsStore: { chords: allChords },
+    chordsStore: { chords: allChords, chordsByGroups: allChordsByGroups },
     settingsStore: { instrument },
     songsStore: { songs, toggleChordInSong, removeChordFromSong },
   } = useStores();
@@ -48,31 +48,19 @@ export const SongPage = observer(() => {
 
   const chords = song.chords.map((chordName) => allChords[instrument].find((chord) => chord.name === chordName));
 
-  const allChordsByGroups = useMemo(
-    () =>
-      allChords[instrument].reduce((chordsByGroups: Record<string, TChordWithActiveFlag[]>, chord) => {
-        // eslint-disable-next-line no-param-reassign
-        if (!chordsByGroups[chord.group]) chordsByGroups[chord.group] = [];
-        chordsByGroups[chord.group].push({
-          ...chord,
-          active: song.chords.includes(chord.name),
-        });
-        return chordsByGroups;
-      }, {}),
-    [allChords, instrument, song.chords],
-  );
-
   const [chordsSearch, setChordsSearch] = useState('');
   const [noChordsFound, setNoChordsFound] = useState(false);
-  const [listChordsWithGroups, setListChordsWithGroups] = useState<TChordsByGroups>(allChordsByGroups);
+  const [listChordsWithGroups, setListChordsWithGroups] = useState<TChordsByGroups>(allChordsByGroups[instrument]);
+
+  const isActiveChord = (chord: TChord) => song.chords.includes(chord.name);
 
   useEffect(() => {
     setNoChordsFound(false);
 
     if (!chordsSearch.length) {
-      setListChordsWithGroups(allChordsByGroups);
+      setListChordsWithGroups(allChordsByGroups[instrument]);
     } else {
-      const filteredListChordsWithGroups = Object.entries(allChordsByGroups).reduce(
+      const filteredListChordsWithGroups = Object.entries(allChordsByGroups[instrument]).reduce(
         (acc: TChordsByGroups, [group, groupChords]) => {
           const filteredGroupChords = groupChords.filter(
             (groupChord: TChordWithActiveFlag) =>
@@ -94,7 +82,7 @@ export const SongPage = observer(() => {
         setNoChordsFound(true);
       }
     }
-  }, [chordsSearch, allChordsByGroups]);
+  }, [chordsSearch, allChordsByGroups, instrument]);
 
   const handleChordClick = (chord: TChord) => {
     toggleChordInSong({
@@ -176,7 +164,7 @@ export const SongPage = observer(() => {
                       <Chord
                         chordData={chordData}
                         instrument={instrument}
-                        active={chordData.active}
+                        active={isActiveChord(chordData)}
                         onClick={handleChordClick}
                       />
                     </SongPageChordsGridItemHeightHolderStyled>

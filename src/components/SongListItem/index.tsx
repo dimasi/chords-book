@@ -1,6 +1,7 @@
 import { mdiDeleteOutline } from '@mdi/js';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { confirmAlert } from 'react-confirm-alert';
 import { Chord } from '@/components/Chord';
 import { ISongListItemProps } from './types';
 import {
@@ -29,7 +30,20 @@ export const SongListItem = observer(
 
     const handleRemoveButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation();
-      removeSong(id);
+
+      confirmAlert({
+        title: `${name} ${author ? ` by ${author}` : ''}`,
+        message: `The song will be remove. Continue?`,
+        buttons: [
+          {
+            label: 'Yes',
+            onClick: () => removeSong(id),
+          },
+          {
+            label: 'No',
+          },
+        ],
+      });
     };
 
     return (

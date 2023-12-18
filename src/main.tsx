@@ -2,9 +2,10 @@ import React from 'react';
 import * as ReactDOM from 'react-dom/client';
 import { RouterProvider } from 'react-router-dom';
 import router from '@/router';
-import './index.css';
 import RootStore from '@/stores/RootStore';
 import { RootStoreContext } from '@/stores/rootStoreContext';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+import './index.css';
 
 const container = document.getElementById('root');
 const rootStore = new RootStore();

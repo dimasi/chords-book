@@ -8,3 +8,10 @@ export interface ISongListItemProps {
   onClick?: React.MouseEventHandler<HTMLElement>;
   searchWords: string[];
 }
+
+export interface IUseSongListItemParams {
+  author?: string;
+  chordsNames: string[];
+  name: string;
+  id: number;
+}

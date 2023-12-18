@@ -1,7 +1,6 @@
 import { mdiDeleteOutline } from '@mdi/js';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
-import { confirmAlert } from 'react-confirm-alert';
 import { Chord } from '@/components/Chord';
 import { ISongListItemProps } from './types';
 import {
@@ -17,34 +16,15 @@ import {
 import { useStores } from '@/stores/rootStoreContext';
 import { Button } from '@/components/Button';
 import { EButtonTheme } from '@/components/Button/constants';
+import { useSongListItem } from './hooks';
 
 export const SongListItem = observer(
   ({ id, author, name, chords: chordsNames, onClick, searchWords }: ISongListItemProps) => {
     const {
-      chordsStore: { chords: allChords },
       settingsStore: { instrument },
-      songsStore: { removeSong },
     } = useStores();
 
-    const chords = chordsNames.map((chordName) => allChords[instrument].find((chord) => chord.name === chordName));
-
-    const handleRemoveButtonClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation();
-
-      confirmAlert({
-        title: `${name} ${author ? ` by ${author}` : ''}`,
-        message: `The song will be remove. Continue?`,
-        buttons: [
-          {
-            label: 'Yes',
-            onClick: () => removeSong(id),
-          },
-          {
-            label: 'No',
-          },
-        ],
-      });
-    };
+    const { chords, handleRemoveButtonClick } = useSongListItem({ author, chordsNames, id, name });
 
     return (
       <SongListItemStyled onClick={onClick}>

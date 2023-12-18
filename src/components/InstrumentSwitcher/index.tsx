@@ -1,10 +1,7 @@
 import { mdiChevronDown, mdiChevronUp } from '@mdi/js';
 import { observer } from 'mobx-react-lite';
-import React, { useState } from 'react';
-import { useDetectClickOutside } from 'react-detect-click-outside';
-import { EInstrument } from '@/domain/constants';
-import { useStores } from '@/stores/rootStoreContext';
-import { TInstrumentSwitcherInstrument } from './types';
+import React from 'react';
+import { useInstrumentSwitcher } from './hooks';
 import {
   InstrumentSwitcherStyled,
   InstrumentSwitcherTitleStyled,
@@ -19,49 +16,16 @@ import {
 } from './styled';
 
 export const InstrumentSwitcher = observer(() => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-
-  const dropdownRef = useDetectClickOutside({ onTriggered: () => setDropdownOpen(false) });
-
   const {
-    settingsStore: { instrument: currentInstrumentValue, switchInstrument },
-  } = useStores();
-
-  const instruments: TInstrumentSwitcherInstrument[] = [
-    {
-      title: 'Guitar',
-      value: EInstrument.guitar,
-    },
-    {
-      title: 'Ukulele',
-      value: EInstrument.ukulele,
-    },
-  ];
-
-  const currentInstrument = instruments.find(
-    (instrument) => instrument.value === currentInstrumentValue,
-  ) as TInstrumentSwitcherInstrument;
-
-  const getSortedInstruments = () => [
     currentInstrument,
-    ...instruments.filter(({ value }) => value !== currentInstrumentValue),
-  ];
-
-  let sortedInstrument = getSortedInstruments();
-
-  const isActiveInstrument = (instrument: TInstrumentSwitcherInstrument) => instrument.value === currentInstrumentValue;
-
-  const handleDropdownItemClick = (event: React.MouseEvent<HTMLElement>, instrument: TInstrumentSwitcherInstrument) => {
-    event.stopPropagation();
-    switchInstrument(instrument.value);
-    sortedInstrument = getSortedInstruments();
-    setDropdownOpen(false);
-  };
-
-  const handleDropdownActiveItemClick = (event: React.MouseEvent<HTMLElement>) => {
-    event.stopPropagation();
-    setDropdownOpen(false);
-  };
+    dropdownRef,
+    dropdownOpen,
+    sortedInstruments,
+    handleDropdownActiveItemClick,
+    handleDropdownItemClick,
+    isActiveInstrument,
+    setDropdownOpen,
+  } = useInstrumentSwitcher();
 
   return (
     <InstrumentSwitcherStyled>
@@ -75,7 +39,7 @@ export const InstrumentSwitcher = observer(() => {
 
         {dropdownOpen ? (
           <InstrumentSwitcherDropdownStyled>
-            {sortedInstrument.map((instrument) =>
+            {sortedInstruments.map((instrument) =>
               isActiveInstrument(instrument) ? (
                 <InstrumentSwitcherDropdownActiveItemStyled
                   key={instrument.title}

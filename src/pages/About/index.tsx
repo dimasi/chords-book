@@ -1,6 +1,7 @@
 import { mdiArrowLeft } from '@mdi/js';
 import { EButtonTheme } from '@/components/Button/constants';
 import { Button } from '@/components/Button';
+import { useBackButton } from '@/hooks/useBackButton';
 import {
   AboutPageBackButtonStyled,
   AboutPageContentStyled,
@@ -10,7 +11,6 @@ import {
   AboutPageTitleStyled,
   AboutPageTitle2Styled,
 } from './styled';
-import { useBackButton } from '@/hooks/useBackButton';
 
 export const AboutPage = () => {
   const { handleBackButtonClick } = useBackButton();

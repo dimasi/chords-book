@@ -32,6 +32,8 @@ class SongsStore {
 
   sortDirection: ESortDirection = ESortDirection.asc;
 
+  existedSongError: TSong | null = null;
+
   get sortedSongs() {
     if (!this.sortBy) return this.songs;
 
@@ -63,11 +65,20 @@ class SongsStore {
   addSong = ({ name, author }: IAddSongParams) => {
     const id = this.lastSongId + 1;
 
+    this.existedSongError =
+      this.songs.find(
+        (song) =>
+          song.name.toLowerCase() === name.toLowerCase().trim() &&
+          song.author?.toLowerCase() === author?.toLowerCase().trim(),
+      ) || null;
+
+    if (this.existedSongError) return null;
+
     const newSong = {
       chords: [],
+      name: name.trim(),
+      author: author?.trim(),
       id,
-      name,
-      author,
     };
 
     this.songs.push(newSong);
@@ -79,6 +90,10 @@ class SongsStore {
 
   removeSong = (id: number) => {
     this.songs = this.songs.filter((song) => song.id !== id);
+  };
+
+  resetExistedSongError = () => {
+    this.existedSongError = null;
   };
 
   setSortBy = (sortBy: ESongsSortBy | null) => {

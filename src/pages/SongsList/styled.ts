@@ -53,3 +53,26 @@ export const SongsListPageAddFormFooterStyled = styled.div`
   justify-content: flex-end;
   padding: 8px 0 0;
 `;
+
+export const SongsListPageAddFormExistedSongErrorStyled = styled.div`
+  margin: 10px 0 0;
+  padding: 10px;
+  background: #e34d4d;
+  color: #fff;
+  font-size: 14px;
+  font-style: italic;
+  text-align: center;
+`;
+
+export const SongsListPageAddFormGoToSongButtonStyled = styled.button`
+  margin: 0 5px;
+  padding: 0;
+  border: 0 none;
+  background: transparent;
+  color: #fff;
+  font-size: inherit;
+  font-style: italic;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+`;

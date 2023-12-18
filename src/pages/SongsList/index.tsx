@@ -15,8 +15,10 @@ import { SongListItem } from '@/components/SongListItem';
 import { Sort } from '@/components/Sort';
 import {
   SongsListPageAddFormContainerStyled,
+  SongsListPageAddFormExistedSongErrorStyled,
   SongsListPageAddFormFieldStyled,
   SongsListPageAddFormFooterStyled,
+  SongsListPageAddFormGoToSongButtonStyled,
   SongsListPageAddFormStyled,
   SongsListPageContentStyled,
   SongsListPageHeaderStyled,
@@ -33,11 +35,21 @@ export const SongsListPage = observer(() => {
   const [songAuthor, setSongAuthor] = useState('');
 
   const {
-    songsStore: { sortedSongs, sortBy, sortDirection, setSortBy, setSortDirection, addSong },
+    songsStore: {
+      sortedSongs,
+      sortBy,
+      sortDirection,
+      setSortBy,
+      setSortDirection,
+      addSong,
+      existedSongError,
+      resetExistedSongError,
+    },
   } = useStores();
 
   const [songsList, setSongsList] = useState<TSong[]>(sortedSongs);
   const [noSongsFound, setNoSongsFound] = useState(false);
+  const [showSongAlreadyExistAlert, setShowSongAlreadyExistAlert] = useState(false);
 
   useEffect(() => {
     setNoSongsFound(false);
@@ -67,10 +79,20 @@ export const SongsListPage = observer(() => {
 
   const handleSongNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSongName(event.target?.value);
+
+    if (existedSongError) {
+      setShowSongAlreadyExistAlert(false);
+      resetExistedSongError();
+    }
   };
 
   const handleSongAuthorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSongAuthor(event.target?.value);
+
+    if (existedSongError) {
+      setShowSongAlreadyExistAlert(false);
+      resetExistedSongError();
+    }
   };
 
   const handleAddSongButtonClick = () => {
@@ -79,7 +101,11 @@ export const SongsListPage = observer(() => {
       author: songAuthor,
     });
 
-    navigate(`/songs/${newSongId}`);
+    if (!newSongId) {
+      setShowSongAlreadyExistAlert(true);
+    } else {
+      navigate(`/songs/${newSongId}`);
+    }
   };
 
   const sortItems: TSortItem<ESongsSortBy>[] = [
@@ -95,6 +121,11 @@ export const SongsListPage = observer(() => {
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
+  };
+
+  const handleGoToSongButtonClick = () => {
+    resetExistedSongError();
+    navigate(`/songs/${existedSongError?.id}`);
   };
 
   return (
@@ -148,6 +179,17 @@ export const SongsListPage = observer(() => {
               onClick={handleAddSongButtonClick}
             />
           </SongsListPageAddFormFooterStyled>
+
+          {showSongAlreadyExistAlert ? (
+            <SongsListPageAddFormExistedSongErrorStyled>
+              Song
+              <SongsListPageAddFormGoToSongButtonStyled onClick={handleGoToSongButtonClick}>
+                {existedSongError?.name}
+                {existedSongError?.author ? ` by ${existedSongError?.author}` : null}
+              </SongsListPageAddFormGoToSongButtonStyled>
+              already exists.
+            </SongsListPageAddFormExistedSongErrorStyled>
+          ) : null}
         </SongsListPageAddFormContainerStyled>
       </SongsListPageAddFormStyled>
     </SongsListPageStyled>

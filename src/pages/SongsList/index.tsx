@@ -23,6 +23,7 @@ import {
   SongsListPageContentStyled,
   SongsListPageHeaderStyled,
   SongsListPageHeaderTitleStyled,
+  SongsListPageNoSongs,
   SongsListPageSongsStyled,
   SongsListPageStyled,
 } from './styled';
@@ -138,6 +139,8 @@ export const SongsListPage = observer(() => {
 
         <SongsListPageSongsStyled>
           {noSongsFound ? <SearchNoResults text="No songs found" onClickReset={() => setSearch('')} /> : null}
+
+          {!songsList.length ? <SongsListPageNoSongs>There are no songs yet</SongsListPageNoSongs> : null}
 
           {songsList.map(({ author, id, name, chords }) => (
             <SongListItem

@@ -76,3 +76,11 @@ export const SongsListPageAddFormGoToSongButtonStyled = styled.button`
   text-underline-offset: 4px;
   cursor: pointer;
 `;
+
+export const SongsListPageNoSongs = styled.div`
+  display: block;
+  padding: 10px 0;
+  color: #555;
+  font-style: italic;
+  text-align: center;
+`;

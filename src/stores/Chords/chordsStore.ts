@@ -1,8 +1,7 @@
 import { makeAutoObservable } from 'mobx';
 import { EInstrument } from '@/domain/constants';
 import { TChord } from '@/domain/types';
-import { guitarChords } from '@/data/guitarChords';
-import { ukuleleChords } from '@/data/ukuleleChords';
+import { guitarChords, ukuleleChords } from '@/data';
 
 const getChordsByGroups = (chords: TChord[]) =>
   chords.reduce((chordsByGroups: Record<string, TChord[]>, chord) => {

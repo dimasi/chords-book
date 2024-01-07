@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { themeConstants } from '@/themeConstants';
+import { IStyledWithThemeProps } from '@/types';
 
 const SIDE_PANEL_WIDTH = '460px';
 
@@ -7,10 +9,11 @@ export const SongPageStyled = styled.div`
   height: 100%;
 `;
 
-export const SongPageContentStyled = styled.div`
+export const SongPageContentStyled = styled.div<IStyledWithThemeProps>`
   flex: 0 0 auto;
   width: calc(100% - ${SIDE_PANEL_WIDTH});
-  border-right: 2px solid #242424;
+  border-right: 2px solid
+    ${(props: IStyledWithThemeProps) => themeConstants[props.theme].songPageContentBorderRightColor};
 `;
 
 export const SongPageAddFormStyled = styled.div`
@@ -18,7 +21,7 @@ export const SongPageAddFormStyled = styled.div`
   width: ${SIDE_PANEL_WIDTH};
 `;
 
-export const SongPageHeaderStyled = styled.div`
+export const SongPageHeaderStyled = styled.div<IStyledWithThemeProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -26,7 +29,9 @@ export const SongPageHeaderStyled = styled.div`
   height: 40px;
   padding: 0 20px;
   position: relative;
-  border-bottom: 2px solid #242424;
+  border-bottom: 2px solid
+    ${(props: IStyledWithThemeProps) => themeConstants[props.theme].songPageHeaderBorderBottomColor};
+  color: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].songPageHeaderColor};
 `;
 
 export const SongPageBackButtonStyled = styled.span`
@@ -79,12 +84,13 @@ export const SongPageHeaderTitleStyled = styled.div`
   text-transform: uppercase;
 `;
 
-export const SongPageChordSearchContainerStyled = styled.div`
+export const SongPageChordSearchContainerStyled = styled.div<IStyledWithThemeProps>`
   display: flex;
   align-items: center;
   height: 40px;
   padding: 0 10px;
-  border-bottom: 2px solid #242424;
+  border-bottom: 2px solid
+    ${(props: IStyledWithThemeProps) => themeConstants[props.theme].songPageChordSearchContainerBorderBottomColor};
 `;
 
 export const SongPageChordsContainerStyled = styled.div`
@@ -96,7 +102,8 @@ export const SongPageChordsGroupStyled = styled.div`
   padding: 15px 0 0;
 `;
 
-export const SongPageChordsGroupTitleStyled = styled.div`
+export const SongPageChordsGroupTitleStyled = styled.div<IStyledWithThemeProps>`
+  color: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].songPageChordsGroupTitleColor};
   font-size: 18px;
   font-weight: 700;
   text-align: center;
@@ -120,9 +127,23 @@ export const SongPageChordsGridItemHeightHolderStyled = styled.div`
   position: relative;
 `;
 
-export const SongPageChordRemoveButtonStyled = styled.div`
+export const SongPageChordRemoveButtonStyled = styled.div<IStyledWithThemeProps>`
   position: absolute;
   z-index: 2;
   top: -18px;
   right: -24px;
+  &:before {
+    content: '';
+    display: block;
+    width: 14px;
+    height: 14px;
+    position: absolute;
+    z-index: -1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 7px;
+    background: ${(props: IStyledWithThemeProps) =>
+      themeConstants[props.theme].songPageChordRemoveButtonBeforeBackgroundColor};
+  }
 `;

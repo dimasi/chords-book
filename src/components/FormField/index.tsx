@@ -1,4 +1,5 @@
-import { IFormFieldProps } from './types';
+import { observer } from 'mobx-react-lite';
+import { useStores } from '@/stores/rootStoreContext';
 import {
   FormFieldControlStyled,
   FormFieldErrorMessageStyled,
@@ -6,13 +7,20 @@ import {
   FormFieldStyled,
   FormFieldWrapperStyled,
 } from './styled';
+import { IFormFieldProps } from './types';
 
-export const FormField = ({ children, errorMessage, label }: IFormFieldProps) => (
-  <FormFieldStyled>
-    <FormFieldWrapperStyled>
-      {label ? <FormFieldLabelStyled>{label}</FormFieldLabelStyled> : null}
-      <FormFieldControlStyled>{children}</FormFieldControlStyled>
-    </FormFieldWrapperStyled>
-    {errorMessage ? <FormFieldErrorMessageStyled>{errorMessage}</FormFieldErrorMessageStyled> : null}
-  </FormFieldStyled>
-);
+export const FormField = observer(({ children, errorMessage, label }: IFormFieldProps) => {
+  const {
+    settingsStore: { theme },
+  } = useStores();
+
+  return (
+    <FormFieldStyled>
+      <FormFieldWrapperStyled>
+        {label ? <FormFieldLabelStyled theme={theme}>{label}</FormFieldLabelStyled> : null}
+        <FormFieldControlStyled>{children}</FormFieldControlStyled>
+      </FormFieldWrapperStyled>
+      {errorMessage ? <FormFieldErrorMessageStyled>{errorMessage}</FormFieldErrorMessageStyled> : null}
+    </FormFieldStyled>
+  );
+});

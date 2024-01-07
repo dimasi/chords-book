@@ -2,12 +2,13 @@ import { mdiArrowLeft, mdiCloseCircle } from '@mdi/js';
 import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { EButtonTheme } from '@/components/Button/constants';
-import { useBackButton } from '@/hooks/useBackButton';
-import { useStores } from '@/stores/rootStoreContext';
 import { Button } from '@/components/Button';
 import { Chord } from '@/components/Chord';
 import { Search } from '@/components/Search';
 import { SearchNoResults } from '@/components/Search/components/NoResults';
+import { useBackButton } from '@/hooks/useBackButton';
+import { useStores } from '@/stores/rootStoreContext';
+import { themeConstants } from '@/themeConstants';
 import { useSong } from './hooks';
 import {
   SongPageAddFormStyled,
@@ -34,7 +35,7 @@ import {
 
 export const SongPage = observer(() => {
   const {
-    settingsStore: { instrument },
+    settingsStore: { instrument, theme },
   } = useStores();
 
   const { handleBackButtonClick } = useBackButton();
@@ -54,13 +55,14 @@ export const SongPage = observer(() => {
 
   return (
     <SongPageStyled>
-      <SongPageContentStyled>
-        <SongPageHeaderStyled>
+      <SongPageContentStyled theme={theme}>
+        <SongPageHeaderStyled theme={theme}>
           <SongPageBackButtonStyled>
             <Button
+              buttonTheme={EButtonTheme.transparent}
               icon={mdiArrowLeft}
+              iconColor={themeConstants[theme].songPageBackButton}
               iconSize={0.8}
-              theme={EButtonTheme.transparent}
               onClick={handleBackButtonClick}
             />
           </SongPageBackButtonStyled>
@@ -75,10 +77,10 @@ export const SongPage = observer(() => {
               chord ? (
                 <SongPageGridItemStyled key={chord.name}>
                   <SongPageGridItemHeightHolderStyled>
-                    <SongPageChordRemoveButtonStyled>
+                    <SongPageChordRemoveButtonStyled theme={theme}>
                       <Button
+                        buttonTheme={EButtonTheme.transparentDanger}
                         icon={mdiCloseCircle}
-                        theme={EButtonTheme.transparentDanger}
                         iconSize={1}
                         onClick={() => handleChordRemoveButtonClick(chord)}
                       />
@@ -93,11 +95,11 @@ export const SongPage = observer(() => {
       </SongPageContentStyled>
 
       <SongPageAddFormStyled>
-        <SongPageHeaderStyled>
+        <SongPageHeaderStyled theme={theme}>
           <SongPageHeaderTitleStyled>All chords</SongPageHeaderTitleStyled>
         </SongPageHeaderStyled>
 
-        <SongPageChordSearchContainerStyled>
+        <SongPageChordSearchContainerStyled theme={theme}>
           <Search value={chordsSearch} onChange={handleChordsSearchChange} />
         </SongPageChordSearchContainerStyled>
 
@@ -106,7 +108,7 @@ export const SongPage = observer(() => {
 
           {Object.entries(listChordsWithGroups).map(([group, groupChords]) => (
             <SongPageChordsGroupStyled key={group}>
-              <SongPageChordsGroupTitleStyled>{group}</SongPageChordsGroupTitleStyled>
+              <SongPageChordsGroupTitleStyled theme={theme}>{group}</SongPageChordsGroupTitleStyled>
               <SongPageChordsGridStyled>
                 {groupChords.map((chordData) => (
                   <SongPageChordsGridItemStyled key={chordData.name}>

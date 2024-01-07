@@ -3,9 +3,10 @@ import { EButtonTheme } from './constants';
 
 export interface IButtonProps {
   icon?: string; // @mdi/js
+  iconColor?: string;
   iconSize?: number;
   text?: string;
-  theme?: EButtonTheme;
+  buttonTheme?: EButtonTheme;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 

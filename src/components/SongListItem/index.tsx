@@ -21,16 +21,16 @@ import { useSongListItem } from './hooks';
 export const SongListItem = observer(
   ({ id, author, name, chords: chordsNames, onClick, searchWords }: ISongListItemProps) => {
     const {
-      settingsStore: { instrument },
+      settingsStore: { instrument, theme },
     } = useStores();
 
     const { chords, moreChordsCounter, handleRemoveButtonClick } = useSongListItem({ author, chordsNames, id, name });
 
     return (
-      <SongListItemStyled onClick={onClick}>
+      <SongListItemStyled theme={theme} onClick={onClick}>
         <SongListItemTitleStyled>
-          <SongListItemNameStyled searchWords={searchWords} textToHighlight={name} />
-          <SongListItemAuthorStyled searchWords={searchWords} textToHighlight={author || ''} />
+          <SongListItemNameStyled searchWords={searchWords} textToHighlight={name} theme={theme} />
+          <SongListItemAuthorStyled searchWords={searchWords} textToHighlight={author || ''} theme={theme} />
         </SongListItemTitleStyled>
 
         <SongListItemChordsStyled>
@@ -41,14 +41,16 @@ export const SongListItem = observer(
               </SongListItemChordContainerStyled>
             ) : null,
           )}
-          {moreChordsCounter ? <SongListItemChordsMoreStyled>+{moreChordsCounter}</SongListItemChordsMoreStyled> : null}
+          {moreChordsCounter ? (
+            <SongListItemChordsMoreStyled theme={theme}>+{moreChordsCounter}</SongListItemChordsMoreStyled>
+          ) : null}
         </SongListItemChordsStyled>
 
-        <SongListItemSpacerStyled />
+        <SongListItemSpacerStyled theme={theme} />
 
         <Button
+          buttonTheme={EButtonTheme.transparentDanger}
           icon={mdiDeleteOutline}
-          theme={EButtonTheme.transparentDanger}
           iconSize={1}
           onClick={handleRemoveButtonClick}
         />

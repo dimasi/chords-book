@@ -1,5 +1,9 @@
 import { Icon } from '@mdi/react';
 import { mdiChevronDown, mdiChevronUp } from '@mdi/js';
+import { observer } from 'mobx-react-lite';
+import { ESortDirection } from '@/constants';
+import { useStores } from '@/stores/rootStoreContext';
+import { themeConstants } from '@/themeConstants';
 import { ISortItemProps, ISortProps, TSortItem } from './types';
 import {
   SortActiveItemChevronStyled,
@@ -8,28 +12,39 @@ import {
   SortStyled,
   SortTitleStyled,
 } from './styled';
-import { ESortDirection } from '@/constants';
 
-const SortItem = <T,>({ item, isActive, sortDirection, onClick }: ISortItemProps<T>) => {
+const SortItem = observer(<T,>({ item, isActive, sortDirection, onClick }: ISortItemProps<T>) => {
+  const {
+    settingsStore: { theme },
+  } = useStores();
+
   if (isActive) {
     return (
-      <SortActiveItemStyled onClick={() => onClick(item)}>
+      <SortActiveItemStyled theme={theme} onClick={() => onClick(item)}>
         {item.title}
-        <SortActiveItemChevronStyled>
+        <SortActiveItemChevronStyled theme={theme}>
           <Icon
             path={sortDirection === ESortDirection.asc ? mdiChevronUp : mdiChevronDown}
             size={0.8}
-            color="#232323"
+            color={themeConstants[theme].sortActiveItemChevronIconColor}
           />
         </SortActiveItemChevronStyled>
       </SortActiveItemStyled>
     );
   }
 
-  return <SortItemStyled onClick={() => onClick(item)}>{item.title}</SortItemStyled>;
-};
+  return (
+    <SortItemStyled theme={theme} onClick={() => onClick(item)}>
+      {item.title}
+    </SortItemStyled>
+  );
+});
 
-export const Sort = <T,>({ sortItems, sortBy, sortDirection, onSort }: ISortProps<T>) => {
+export const Sort = observer(<T,>({ sortItems, sortBy, sortDirection, onSort }: ISortProps<T>) => {
+  const {
+    settingsStore: { theme },
+  } = useStores();
+
   const handleItemClick = (item: TSortItem<T>) => {
     if (item.value !== sortBy) {
       onSort({
@@ -51,7 +66,7 @@ export const Sort = <T,>({ sortItems, sortBy, sortDirection, onSort }: ISortProp
 
   return (
     <SortStyled>
-      <SortTitleStyled>Sort by:</SortTitleStyled>
+      <SortTitleStyled theme={theme}>Sort by:</SortTitleStyled>
       {sortItems.map((item) => (
         <SortItem<T>
           key={item.title}
@@ -63,4 +78,4 @@ export const Sort = <T,>({ sortItems, sortBy, sortDirection, onSort }: ISortProp
       ))}
     </SortStyled>
   );
-};
+});

@@ -29,6 +29,10 @@ import {
 } from './styled';
 
 export const SongsListPage = observer(() => {
+  const {
+    settingsStore: { theme },
+  } = useStores();
+
   const navigate = useNavigate();
 
   const {
@@ -54,8 +58,8 @@ export const SongsListPage = observer(() => {
 
   return (
     <SongsListPageStyled>
-      <SongsListPageContentStyled>
-        <SongsListPageHeaderStyled>
+      <SongsListPageContentStyled theme={theme}>
+        <SongsListPageHeaderStyled theme={theme}>
           <Search value={search} onChange={handleSearchChange} />
           <Sort<ESongsSortBy> sortItems={sortItems} sortBy={sortBy} sortDirection={sortDirection} onSort={handleSort} />
         </SongsListPageHeaderStyled>
@@ -80,8 +84,8 @@ export const SongsListPage = observer(() => {
       </SongsListPageContentStyled>
 
       <SongsListPageAddFormStyled>
-        <SongsListPageHeaderStyled>
-          <SongsListPageHeaderTitleStyled>Add new song</SongsListPageHeaderTitleStyled>
+        <SongsListPageHeaderStyled theme={theme}>
+          <SongsListPageHeaderTitleStyled theme={theme}>Add new song</SongsListPageHeaderTitleStyled>
         </SongsListPageHeaderStyled>
 
         <SongsListPageAddFormContainerStyled>
@@ -99,7 +103,7 @@ export const SongsListPage = observer(() => {
 
           <SongsListPageAddFormFooterStyled>
             <Button
-              theme={EButtonTheme.success}
+              buttonTheme={EButtonTheme.success}
               text="Add chords"
               icon={mdiStepForward}
               onClick={handleAddSongButtonClick}

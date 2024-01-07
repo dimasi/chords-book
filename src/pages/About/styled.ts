@@ -1,8 +1,10 @@
 import styled from 'styled-components';
+import { themeConstants } from '@/themeConstants';
+import { IStyledWithThemeProps } from '@/types';
 
 export const AboutPageStyled = styled.div``;
 
-export const AboutPageHeaderStyled = styled.div`
+export const AboutPageHeaderStyled = styled.div<IStyledWithThemeProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,7 +12,8 @@ export const AboutPageHeaderStyled = styled.div`
   height: 40px;
   padding: 0 20px;
   position: relative;
-  border-bottom: 2px solid #242424;
+  border-bottom: 2px solid
+    ${(props: IStyledWithThemeProps) => themeConstants[props.theme].aboutPageHeaderBorderBottomColor};
 `;
 
 export const AboutPageBackButtonStyled = styled.div`
@@ -20,14 +23,16 @@ export const AboutPageBackButtonStyled = styled.div`
   transform: translateY(-50%);
 `;
 
-export const AboutPageTitleStyled = styled.div`
+export const AboutPageTitleStyled = styled.div<IStyledWithThemeProps>`
+  color: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].aboutPageTitleColor};
   flex: 0 0 auto;
   font-size: 18px;
   text-transform: uppercase;
   font-weight: bold;
 `;
 
-export const AboutPageTitle2Styled = styled.div`
+export const AboutPageTitle2Styled = styled.div<IStyledWithThemeProps>`
+  color: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].aboutPageTitle2Color};
   flex: 0 0 auto;
   font-size: 18px;
   text-transform: uppercase;
@@ -39,6 +44,7 @@ export const AboutPageContentStyled = styled.div`
   padding: 35px 15px;
 `;
 
-export const AboutPageParagraphStyled = styled.div`
+export const AboutPageParagraphStyled = styled.div<IStyledWithThemeProps>`
   margin: 0 0 25px;
+  color: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].aboutPageParagraphColor};
 `;

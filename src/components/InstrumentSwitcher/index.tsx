@@ -1,6 +1,8 @@
 import { mdiChevronDown, mdiChevronUp } from '@mdi/js';
 import { observer } from 'mobx-react-lite';
 import React from 'react';
+import { useStores } from '@/stores/rootStoreContext';
+import { themeConstants } from '@/themeConstants';
 import { useInstrumentSwitcher } from './hooks';
 import {
   InstrumentSwitcherStyled,
@@ -17,6 +19,10 @@ import {
 
 export const InstrumentSwitcher = observer(() => {
   const {
+    settingsStore: { theme },
+  } = useStores();
+
+  const {
     currentInstrument,
     dropdownRef,
     dropdownOpen,
@@ -29,32 +35,41 @@ export const InstrumentSwitcher = observer(() => {
 
   return (
     <InstrumentSwitcherStyled>
-      <InstrumentSwitcherTitleStyled>Instrument:</InstrumentSwitcherTitleStyled>
+      <InstrumentSwitcherTitleStyled theme={theme}>Instrument:</InstrumentSwitcherTitleStyled>
 
       <InstrumentSwitcherTogglerStyled ref={dropdownRef} onClick={() => setDropdownOpen(true)}>
         <InstrumentSwitcherTogglerWrapperStyled>
-          <InstrumentSwitcherTogglerTextStyled>{currentInstrument?.title}</InstrumentSwitcherTogglerTextStyled>
-          <InstrumentSwitcherTogglerIconStyled path={mdiChevronDown} size={0.7} color="#232323" />
+          <InstrumentSwitcherTogglerTextStyled theme={theme}>
+            {currentInstrument?.title}
+          </InstrumentSwitcherTogglerTextStyled>
+
+          <InstrumentSwitcherTogglerIconStyled
+            path={mdiChevronDown}
+            size={0.7}
+            color={themeConstants[theme].instrumentSwitcherTogglerColor}
+          />
         </InstrumentSwitcherTogglerWrapperStyled>
 
         {dropdownOpen ? (
-          <InstrumentSwitcherDropdownStyled>
+          <InstrumentSwitcherDropdownStyled theme={theme}>
             {sortedInstruments.map((instrument) =>
               isActiveInstrument(instrument) ? (
                 <InstrumentSwitcherDropdownActiveItemStyled
                   key={instrument.title}
+                  theme={theme}
                   onClick={handleDropdownActiveItemClick}
                 >
                   {instrument.title}
                   <InstrumentSwitcherDropdownActiveItemTogglerIconStyled
                     path={mdiChevronUp}
                     size={0.7}
-                    color="#232323"
+                    color={themeConstants[theme].instrumentSwitcherTogglerColor}
                   />
                 </InstrumentSwitcherDropdownActiveItemStyled>
               ) : (
                 <InstrumentSwitcherDropdownItemStyled
                   key={instrument.title}
+                  theme={theme}
                   onClick={(event: React.MouseEvent<HTMLElement>) => handleDropdownItemClick(event, instrument)}
                 >
                   {instrument.title}

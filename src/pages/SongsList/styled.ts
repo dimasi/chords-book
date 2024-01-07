@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { themeConstants } from '@/themeConstants';
+import { IStyledWithThemeProps } from '@/types';
 
 const SIDE_PANEL_WIDTH = '460px';
 
@@ -7,10 +9,11 @@ export const SongsListPageStyled = styled.div`
   height: 100%;
 `;
 
-export const SongsListPageContentStyled = styled.div`
+export const SongsListPageContentStyled = styled.div<IStyledWithThemeProps>`
   flex: 0 0 auto;
   width: calc(100% - ${SIDE_PANEL_WIDTH});
-  border-right: 2px solid #242424;
+  border-right: 2px solid
+    ${(props: IStyledWithThemeProps) => themeConstants[props.theme].songsListPageContentBorderRightColor};
 `;
 
 export const SongsListPageSongsStyled = styled.div`
@@ -28,17 +31,19 @@ export const SongsListPageAddFormContainerStyled = styled.div`
   padding: 30px;
 `;
 
-export const SongsListPageHeaderStyled = styled.div`
+export const SongsListPageHeaderStyled = styled.div<IStyledWithThemeProps>`
   display: flex;
   align-items: center;
   gap: 15px;
   height: 40px;
   padding: 0 20px;
-  border-bottom: 2px solid #242424;
+  border-bottom: 2px solid
+    ${(props: IStyledWithThemeProps) => themeConstants[props.theme].songsListPageHeaderBorderBottomColor};
 `;
 
-export const SongsListPageHeaderTitleStyled = styled.div`
+export const SongsListPageHeaderTitleStyled = styled.div<IStyledWithThemeProps>`
   width: 100%;
+  color: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].songsListPageHeaderTitleColor};
   font-size: 14px;
   text-align: center;
   text-transform: uppercase;

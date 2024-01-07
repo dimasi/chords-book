@@ -1,7 +1,10 @@
 import { mdiArrowLeft } from '@mdi/js';
+import { observer } from 'mobx-react-lite';
 import { EButtonTheme } from '@/components/Button/constants';
 import { Button } from '@/components/Button';
 import { useBackButton } from '@/hooks/useBackButton';
+import { useStores } from '@/stores/rootStoreContext';
+import { themeConstants } from '@/themeConstants';
 import {
   AboutPageBackButtonStyled,
   AboutPageContentStyled,
@@ -12,22 +15,32 @@ import {
   AboutPageTitle2Styled,
 } from './styled';
 
-export const AboutPage = () => {
+export const AboutPage = observer(() => {
+  const {
+    settingsStore: { theme },
+  } = useStores();
+
   const { handleBackButtonClick } = useBackButton();
 
   return (
     <AboutPageStyled>
-      <AboutPageHeaderStyled>
+      <AboutPageHeaderStyled theme={theme}>
         <AboutPageBackButtonStyled>
-          <Button icon={mdiArrowLeft} iconSize={0.8} theme={EButtonTheme.transparent} onClick={handleBackButtonClick} />
+          <Button
+            buttonTheme={EButtonTheme.transparent}
+            icon={mdiArrowLeft}
+            iconColor={themeConstants[theme].aboutPageBackButtonColor}
+            iconSize={0.8}
+            onClick={handleBackButtonClick}
+          />
         </AboutPageBackButtonStyled>
 
-        <AboutPageTitleStyled>About</AboutPageTitleStyled>
-        <AboutPageTitle2Styled>this project</AboutPageTitle2Styled>
+        <AboutPageTitleStyled theme={theme}>About</AboutPageTitleStyled>
+        <AboutPageTitle2Styled theme={theme}>this project</AboutPageTitle2Styled>
       </AboutPageHeaderStyled>
 
       <AboutPageContentStyled>
-        <AboutPageParagraphStyled>
+        <AboutPageParagraphStyled theme={theme}>
           {`Quisque maximus risus sed erat sodales fermentum. Nulla dignissim est felis, vitae ornare ipsum blandit at.
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus a scelerisque sapien. Mauris vitae 
           consequat justo. Donec hendrerit odio sed purus aliquet feugiat. Duis at quam tellus. Phasellus rhoncus,
@@ -38,7 +51,7 @@ export const AboutPage = () => {
           porttitor sollicitudin orci, vel vestibulum ipsum tempor ut. Pellentesque quis tempor erat, in mollis orci.`}
         </AboutPageParagraphStyled>
 
-        <AboutPageParagraphStyled>
+        <AboutPageParagraphStyled theme={theme}>
           {`Fusce tristique, velit in mattis ornare, libero massa cursus tellus, vitae mattis velit ligula eget
           lorem. Pellentesque ac enim ut erat laoreet convallis in nec nulla. Praesent aliquet sed lorem vulputate
           pharetra. Mauris tincidunt lectus sit amet dui dapibus tempus. Nunc convallis, velit in fringilla
@@ -52,4 +65,4 @@ export const AboutPage = () => {
       </AboutPageContentStyled>
     </AboutPageStyled>
   );
-};
+});

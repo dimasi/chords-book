@@ -1,11 +1,9 @@
 import styled from 'styled-components';
+import { themeConstants } from '@/themeConstants';
+import { IStyledWithThemeProps } from '@/types';
 import { IChordStyledProps } from './types';
 
-const CHORD_COLORS = {
-  BASE: '#333',
-};
-
-export const ChordStyled = styled.div<IChordStyledProps>`
+export const ChordStyled = styled.div<IChordStyledProps & IStyledWithThemeProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,9 +12,17 @@ export const ChordStyled = styled.div<IChordStyledProps>`
   left: 0;
   width: 100%;
   height: 100%;
-  border: 1px solid ${(props: IChordStyledProps) => (props.$active ? '#76b471' : '#aaa')};
-  box-shadow: 0 0 5px ${(props: IChordStyledProps) => (props.$active ? 'rgba(21, 204, 7, 0.6)' : 'rgba(0, 0, 0, 0.4)')};
-  background: ${(props: IChordStyledProps) => (props.$active ? '#73fa6b' : '#fff')};
+  border: 1px solid
+    ${(props: IChordStyledProps & IStyledWithThemeProps) =>
+      props.$active
+        ? themeConstants[props.theme].chordActiveBorderColor
+        : themeConstants[props.theme].chordBorderColor};
+  box-shadow: ${(props: IChordStyledProps & IStyledWithThemeProps) =>
+    props.$active ? themeConstants[props.theme].chordActiveBoxShadow : themeConstants[props.theme].chordBoxShadow};
+  background: ${(props: IChordStyledProps & IStyledWithThemeProps) =>
+    props.$active
+      ? themeConstants[props.theme].chordActiveBackgroundColor
+      : themeConstants[props.theme].chordBackgroundColor};
   font-family: Arial, sans-serif;
   text-anchor: middle;
 `;
@@ -27,46 +33,50 @@ export const ChordSVGStyled = styled.svg`
   position: absolute;
 `;
 
-export const GuitarChordStyled = styled(ChordStyled)``;
+export const GuitarChordStyled = styled(ChordStyled)<IStyledWithThemeProps>``;
 
-export const UkuleleChordStyled = styled(ChordStyled)``;
+export const UkuleleChordStyled = styled(ChordStyled)<IStyledWithThemeProps>``;
 
-export const ChordNameStyled = styled.text`
-  fill: ${CHORD_COLORS.BASE};
+export const ChordNameStyled = styled.text<IStyledWithThemeProps>`
+  fill: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordNameFill};
 `;
 
-export const NeckStyled = styled.rect`
+export const NeckStyled = styled.rect<IStyledWithThemeProps>`
   fill: none;
-  stroke: ${CHORD_COLORS.BASE};
+  stroke: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordNeckStroke};
 `;
 
-export const StringStyled = styled.line`
+export const StringStyled = styled.line<IStyledWithThemeProps>`
   fill: none;
-  stroke: ${CHORD_COLORS.BASE};
+  stroke: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordStringStroke};
 `;
 
-export const FretStyled = styled.line`
+export const FretStyled = styled.line<IStyledWithThemeProps>`
   fill: none;
-  stroke: ${CHORD_COLORS.BASE};
+  stroke: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordFretStroke};
 `;
 
-export const OpenStringStyled = styled.circle`
+export const OpenStringStyled = styled.circle<IStyledWithThemeProps>`
   fill: none;
-  stroke: ${CHORD_COLORS.BASE};
+  stroke: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordOpenStringStroke};
 `;
 
-export const UnusedStringStyled = styled.text``;
-
-export const StartFretStyled = styled.text``;
-
-export const DotStyled = styled.circle`
-  fill: ${CHORD_COLORS.BASE};
+export const UnusedStringStyled = styled.text<IStyledWithThemeProps>`
+  fill: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordUnusedStringFill};
 `;
 
-export const BarreDotStyled = styled.circle`
-  fill: ${CHORD_COLORS.BASE};
+export const StartFretStyled = styled.text<IStyledWithThemeProps>`
+  fill: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordStartFretFill};
 `;
 
-export const BarreStyled = styled.rect`
-  fill: ${CHORD_COLORS.BASE};
+export const DotStyled = styled.circle<IStyledWithThemeProps>`
+  fill: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordDotFill};
+`;
+
+export const BarreDotStyled = styled.circle<IStyledWithThemeProps>`
+  fill: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordBarreDotFill};
+`;
+
+export const BarreStyled = styled.rect<IStyledWithThemeProps>`
+  fill: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordBarreFill};
 `;

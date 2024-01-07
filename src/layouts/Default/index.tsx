@@ -1,6 +1,8 @@
+import { observer } from 'mobx-react-lite';
 import { Outlet, useMatch } from 'react-router-dom';
 import { Avatar } from '@/components/Avatar';
 import { InstrumentSwitcher } from '@/components/InstrumentSwitcher';
+import { ThemeToggler } from '@/components/ThemeToggler';
 import {
   DefaultLayoutAppNavStyled,
   DefaultLayoutAppNavItemStyled,
@@ -8,11 +10,17 @@ import {
   DefaultLayoutAppTitleStyled,
   DefaultLayoutHeaderAvatarStyled,
   DefaultLayoutHeaderStyled,
-  DefaultLayoutStyled,
   DefaultLayoutPageStyled,
+  DefaultLayoutStyled,
+  DefaultLayoutThemeTogglerStyled,
 } from '@/layouts/Default/styled';
+import { useStores } from '@/stores/rootStoreContext';
 
-export const LayoutDefault = () => {
+export const LayoutDefault = observer(() => {
+  const {
+    settingsStore: { theme },
+  } = useStores();
+
   const appNavLinks = [
     {
       title: 'Songs list',
@@ -28,25 +36,29 @@ export const LayoutDefault = () => {
   const isActiveLink = (url: string) => Boolean(useMatch(url));
 
   return (
-    <DefaultLayoutStyled>
-      <DefaultLayoutHeaderStyled>
-        <DefaultLayoutAppTitleStyled>CHORDS BOOK</DefaultLayoutAppTitleStyled>
+    <DefaultLayoutStyled theme={theme}>
+      <DefaultLayoutHeaderStyled theme={theme}>
+        <DefaultLayoutAppTitleStyled theme={theme}>CHORDS BOOK</DefaultLayoutAppTitleStyled>
 
         <InstrumentSwitcher />
 
         <DefaultLayoutAppNavStyled>
           {appNavLinks.map(({ title, url }) =>
             isActiveLink(url) ? (
-              <DefaultLayoutAppNavActiveItemStyled key={url} to={url}>
+              <DefaultLayoutAppNavActiveItemStyled key={url} theme={theme} to={url}>
                 {title}
               </DefaultLayoutAppNavActiveItemStyled>
             ) : (
-              <DefaultLayoutAppNavItemStyled key={url} to={url}>
+              <DefaultLayoutAppNavItemStyled key={url} theme={theme} to={url}>
                 {title}
               </DefaultLayoutAppNavItemStyled>
             ),
           )}
         </DefaultLayoutAppNavStyled>
+
+        <DefaultLayoutThemeTogglerStyled>
+          <ThemeToggler />
+        </DefaultLayoutThemeTogglerStyled>
 
         <DefaultLayoutHeaderAvatarStyled>
           <Avatar src="/images/avatar.jpg" />
@@ -58,4 +70,4 @@ export const LayoutDefault = () => {
       </DefaultLayoutPageStyled>
     </DefaultLayoutStyled>
   );
-};
+});

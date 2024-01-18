@@ -10,6 +10,7 @@ import {
   IDotsProps,
   IFretsProps,
   INeckProps,
+  INutProps,
   IOpenStringsProps,
   IStartFretProps,
   IStringsProps,
@@ -24,6 +25,7 @@ import {
   FretStyled,
   GuitarChordStyled,
   NeckStyled,
+  NutStyled,
   OpenStringStyled,
   StartFretStyled,
   StringStyled,
@@ -81,6 +83,20 @@ const Neck = observer(({ instrument }: INeckProps) => {
   } = useStores();
 
   return <NeckStyled x={neckX} y={neckY} width={neckWidth[instrument]} height="464" strokeWidth="5" theme={theme} />;
+});
+
+const Nut = observer(({ chordData, instrument }: INutProps) => {
+  if (chordData.fret !== null) return null;
+
+  const {
+    settingsStore: { theme },
+  } = useStores();
+
+  const nutX = neckX - 2.5;
+  const nutX2 = neckX + neckWidth[instrument] + 2.5;
+  const nutY = neckY;
+
+  return <NutStyled key={uniqueId('nut')} x1={nutX} x2={nutX2} y1={nutY} y2={nutY} strokeWidth="18" theme={theme} />;
 });
 
 const Strings = observer(({ instrument }: IStringsProps) => {
@@ -297,6 +313,7 @@ const ChordSvg = ({ chordData, instrument }: { chordData: TChord; instrument: EI
   <ChordSVGStyled viewBox={viewBox[instrument]}>
     <ChordName chordData={chordData} instrument={instrument} />
     <Neck instrument={instrument} />
+    <Nut chordData={chordData} instrument={instrument} />
     <Strings instrument={instrument} />
     <Frets instrument={instrument} />
     <OpenStrings chordData={chordData} />

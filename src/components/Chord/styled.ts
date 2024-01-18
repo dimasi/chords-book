@@ -46,6 +46,11 @@ export const NeckStyled = styled.rect<IStyledWithThemeProps>`
   stroke: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordNeckStroke};
 `;
 
+export const NutStyled = styled.line<IStyledWithThemeProps>`
+  fill: none;
+  stroke: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordNutStroke};
+`;
+
 export const StringStyled = styled.line<IStyledWithThemeProps>`
   fill: none;
   stroke: ${(props: IStyledWithThemeProps) => themeConstants[props.theme].chordStringStroke};

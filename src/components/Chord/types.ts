@@ -17,6 +17,11 @@ export interface INeckProps {
   instrument: EInstrument;
 }
 
+export interface INutProps {
+  chordData: TChord;
+  instrument: EInstrument;
+}
+
 export interface IStringsProps {
   instrument: EInstrument;
 }
